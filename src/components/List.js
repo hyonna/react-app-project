@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 const List = ({
   id,
@@ -21,12 +21,17 @@ const List = ({
     });
 
     setTodoData(newTodoData);
+    localStorage.setItem("todoData", JSON.stringify(newTodoData));
   };
 
-  const handleClick = (id) => {
-    let newTodoData = todoData.filter((data) => data.id !== id);
-    return setTodoData(newTodoData);
-  };
+  const handleClick = useCallback(
+    (id) => {
+      let newTodoData = todoData.filter((data) => data.id !== id);
+      setTodoData(newTodoData);
+      localStorage.setItem("todoData", JSON.stringify(newTodoData));
+    },
+    [todoData]
+  );
 
   const handleEditChange = (e) => {
     setEditiedTitle(e.target.value);
@@ -42,6 +47,7 @@ const List = ({
     });
 
     setTodoData(newTodoData);
+    localStorage.setItem("todoData", JSON.stringify(newTodoData));
     setIsEditing(false);
   };
   if (isEditing) {
